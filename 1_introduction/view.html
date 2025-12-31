@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" type="text/css" href="../style.css">
+    </head>
+    <body>
+        <main class="w-full h-full p-4">
+            <a href="../index.html" aria-label="Go to Knockout Tutorial homepage">Home</a>
+            <h1>1 - Introduction</h1>
+            <p>First name: <strong data-bind="text: firstName"></strong></p>
+            <p>Last name: <strong data-bind="text: lastName"></strong></p>
+            <p>Full name: <strong data-bind="text: fullName"></strong></p>
+
+            <input type="text" data-bind="value: firstName" placeholder="First name">
+            <input type="text" data-bind="value: lastName" placeholder="Last name">
+
+            <button data-bind="click: capitaliseLastName">Capitalise last name</button>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <script src="../knockout-3.5.1.js"></script>
+        <script src="../jquery-3.7.1.min.js"></script>
+        <script src="viewmodel.js"></script>
+    </body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" type="text/css" href="../style.css">
+    </head>
+    <body>
+        <main class="w-full h-full p-4">
+            <a href="../index.html" aria-label="Go to Knockout Tutorial homepage">Home</a>
+            <h1>3 - Single Page Applications</h1>
+
+            <!-- Email Folders List -->
+            <ul class="email-folders" data-bind="foreach: folders">
+                <li tabindex="0" data-bind="text: $data,
+                    attr: { 
+                        'aria-current': $data === $root.chosenFolderID() ? 'true' : 'false',
+                        'aria-label': 'Open ' + $data + ' folder'
+                    },
+                    click: () => $root.routeTo('#' + $data),
+                    event: { keydown: (folder,e) => { if(e.key === 'Enter'){$root.routeTo('#' + folder);} return true;} }"></li>
+            </ul>
+
+            <!-- Loading Indicator -->
+            <div class="loading-indicator" data-bind="visible: isLoading()">
+                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+
+                <p>Loading...</p>
+            </div>
+
+            <!-- Not Found Message -->
+            <div class="text-red-500" data-bind="visible: notFound() && !isLoading()">
+                <p>Not found</p>
+            </div>
+
+                <div data-bind="visible: !notFound() && !isLoading()">
+                    <!-- Email Folder Table -->
+                <table class="email-folder" data-bind="with: chosenFolderData">
+                    <thead>
+                        <tr>
+                            <th colspan="4" data-bind="text: id"></th>
+                        </tr>
+                        <tr>
+                            <td>From</td>
+                            <td>To</td>
+                            <td>Subject</td>
+                            <td>Date</td>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: mails">
+                        <tr tabindex="0"
+                            class="email-folder-row"
+                            data-bind="click: () => $root.routeTo('#' + folder + '/' + id),
+                            event: { 
+                                keydown: (mail,e) => { if(e.key === 'Enter'){$root.routeTo('#' + folder + '/' + id);} return true;}
+                            },
+                            attr: {
+                                'aria-label': 'Open email from ' + from + ' with subject ' + subject
+                            }">
+                            <td data-bind="text: from"></td>
+                            <td data-bind="text: to"></td>
+                            <td data-bind="text: subject"></td>
+                            <td data-bind="text: date"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Email Detail View -->
+                <div data-bind="with: chosenMailData">
+                    <button data-bind="click: () => $root.routeTo('#' + folder), text: 'Back to ' + folder"></button>
+                    <h3 data-bind="text: subject"></h3>
+                    <p><strong>From:</strong> <span data-bind="text: from"></span></p>
+                    <p><strong>To:</strong> <span data-bind="text: to"></span></p>
+                    <p><strong>Date:</strong> <span data-bind="text: date"></span></p>
+                    <hr>
+                    <p data-bind="html: messageContent"></p>
+                </div>
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <script src="../knockout-3.5.1.js"></script>
+        <script src="../jquery-3.7.1.min.js"></script>
+        <script src="viewmodel.js"></script>
+    </body>
+</html>
